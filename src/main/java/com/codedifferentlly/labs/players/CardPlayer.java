@@ -32,10 +32,6 @@ public class CardPlayer extends Player{
     return message;
   }
 
-    public ArrayList<Card> getCards() {
-        return hand;
-    }
-
     public Integer getCount(String value){
         String newValue = value.toUpperCase();
         Integer occurences = 0;
