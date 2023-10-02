@@ -22,11 +22,14 @@ public class GoFish extends CardGame{
     }
 
     public void listOptions(CardPlayer player) {
-        System.out.println("Your cards:");
+        if( player.getNumberOfCards() == 0 && deck.getSize()==0){
+            winner(player);
+            System.exit(0);
+        }
+        System.out.println("====🃏Your cards🃏====");
         System.out.println();
         player.listCards();
         System.out.println();
-        dealer.listCards();
     }
 
     public void checkCardsForPoints(CardPlayer player) {
@@ -34,7 +37,7 @@ public class GoFish extends CardGame{
             if (player.getCount(number.name()) == 4){
                 player.addPoints();
                 player.removeACardValue(number);
-                System.out.println("Lucky!!! You got a pair! You got a book of " + number);
+                System.out.println("Lucky!!! You got a pair!🎉 You got a book of " + number + "S!");
                 System.out.printf("\nYou now have %d points!%n", player.getPoints());
 
                 if(player.getNumberOfCards() == 0 && deck.getSize() < 5){
@@ -61,13 +64,13 @@ public class GoFish extends CardGame{
         Integer total = dealer.getCount(cardValue.name());
 
         if (total == 0){
-            System.out.printf("\nGo fish! The computer does not have a %s.\n", cardValue);
+            System.out.printf("\nGo fish!🐠 The computer does not have a %s.\n", cardValue);
             ArrayList<Card> dealt = new ArrayList<>();
             dealt = deck.deal(1);
             System.out.println("Drawn Card: " + dealt.toString());
             player.addCards(dealt);
             if (dealt.get(0).getNumber().equals(cardValue.name())){
-                System.out.println("\nYou fished you wish. Please go again!\n");
+                System.out.println("\nYou fished you wish.⭐️ Please go again!\n");
                 checkCardsForPoints(player);
                 getUserInputAndCheck(player);
             }
@@ -85,7 +88,7 @@ public class GoFish extends CardGame{
             }
             dealer.removeACardValue(cardValue);
             player.addCards(addedCards);
-            System.out.println("\nGood job, you stole " + total + " cards with value: " + cardValue);
+            System.out.println("\nGood job, you stole " + total + " cards with value: " + cardValue + "✅");
             System.out.println();
             checkCardsForPoints(player);
             getUserInputAndCheck(player);
@@ -107,7 +110,7 @@ public class GoFish extends CardGame{
         CardValue cardValue = CardValue.valueOf(value.toUpperCase());
 
         while(player.getCount(cardValue.name()) == 0) {
-            System.out.print("\nThat Value isn't already contained in your deck, " + "Please enter another value:");
+            System.out.print("\nThat Value isn't already contained in your deck, " + "Please enter another value: ");
             value = scanner.nextLine();
             cardValue = CardValue.valueOf(value.toUpperCase());
         }
@@ -116,16 +119,20 @@ public class GoFish extends CardGame{
     }
 
     public void checkPlayerHand(CardPlayer dealer, CardPlayer player, CardValue cardValue) {
+        if(player.getNumberOfCards() == 0 || dealer.getNumberOfCards() == 0 && deck.getSize() == 0){
+            winner(player);
+            System.exit(0);
+        }
         ArrayList<Card> addedCards = new ArrayList<>();
         System.out.println("Do you have any " + cardValue + "'s?");
         Integer total = player.getCount(cardValue.name());
         if (total == 0) {
-            System.out.printf("\nGo fish! %s does not have a %s.\n", player.getName(), cardValue);
+            System.out.printf("\nGo fish!🐠 %s does not have a %s.\n", player.getName(), cardValue);
             ArrayList<Card> dealt = new ArrayList<>();
             dealt = deck.deal(1);
             dealer.addCards(dealt);
             if (dealt.get(0).getNumber().equals(cardValue.name())) {
-                System.out.println("\nThe computer fished their wish. They will go again!\n");
+                System.out.println("\nThe computer fished their wish.⭐️ They will go again!\n");
                 checkCardsForPoints(dealer);
                 checkPlayerHand(dealer, player, dealer.randomCard());
             }
@@ -142,10 +149,14 @@ public class GoFish extends CardGame{
             }
             player.removeACardValue(cardValue);
             dealer.addCards(addedCards);
-            System.out.println("\nGood job, you stole " + total + " cards with value: " + cardValue);
+            System.out.println("\nGood job, the computer stole " + total + " cards with value: " + cardValue + "✅");
             System.out.println();
             checkCardsForPoints(dealer);
-            checkPlayerHand(dealer, player, dealer.randomCard());
+            if (deck.getSize() == 0){
+                winner(player);
+                System.exit(0);
+            }
+            else{checkPlayerHand(dealer, player, dealer.randomCard());}
         }
 
     }
@@ -184,11 +195,11 @@ public class GoFish extends CardGame{
     public void winner(CardPlayer player){
         if(player.getPoints() > dealer.getPoints()){
             player.addWin();
-            System.out.printf("\n%s wins!", player.getName());
+            System.out.printf("\n%s wins!⭐\n", player.getName());
             System.out.println(player.toString());
         } else if (player.getPoints() < dealer.getPoints()){
             dealer.addWin();
-            System.out.println("The computer wins!");
+            System.out.println("\nThe computer wins!☹️\n");
             System.out.println(dealer.toString());
         }else {
             System.out.println("It was a tie. Better luck next time :) ");
@@ -202,8 +213,8 @@ public class GoFish extends CardGame{
     public void play(CardPlayer player) {
         System.out.println(String.format("\nWelcome to Go Fish %s!🐠🎣🃏", player.getName()));
         deck.shuffle();
-        player.addCards(deck.deal(20));
-        dealer.addCards(deck.deal(20));
+        player.addCards(deck.deal(7));
+        dealer.addCards(deck.deal(7));
 
         System.out.println("As a guest, you will go first!");
 
