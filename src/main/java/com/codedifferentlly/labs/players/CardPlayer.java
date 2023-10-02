@@ -12,8 +12,6 @@ import java.util.Random;
 public class CardPlayer extends Player{
     private ArrayList<Card> hand;
 
-    private Integer points = 0;
-
 
     public CardPlayer(String name) {
         super(name);
@@ -33,9 +31,6 @@ public class CardPlayer extends Player{
         }
     return message;
   }
-    public Integer getPoints(){
-        return points;
-    }
 
     public ArrayList<Card> getCards() {
         return hand;
@@ -99,7 +94,6 @@ public class CardPlayer extends Player{
         throw new IllegalArgumentException("You do not have this card.");
     }
 
-    public Integer addPoints() {return points++;}
 
     public CardValue randomCard(){
         Random rand = new Random();
