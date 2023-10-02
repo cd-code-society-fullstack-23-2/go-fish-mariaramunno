@@ -54,6 +54,4 @@ public class Casino {
         Casino app = new Casino();
         app.start();
     }
-
-
 }
