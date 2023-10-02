@@ -7,21 +7,21 @@ public class PlayerTest {
 
     @Test
     public void constructorTest01(){
-        String name = "Juice Man";
+        String name = "name";
         Player player = new Player(name);
 
-        String expected = "Name: Juice Man, Wins: 0";
+        String expected = "Name: name, Wins: 0";
         String actual = player.toString();
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void getSetName(){
-        String name = "Beyonce";
+        String name = "Name";
         Player player = new Player(name);
 
-        player.setName("Sasha Fierce");
-        String expected = "Sasha Fierce";
+        player.setName("name1");
+        String expected = "name1";
         String actual = player.getName();
 
         Assertions.assertEquals(expected, actual);
@@ -29,7 +29,7 @@ public class PlayerTest {
 
     @Test
     public void addGetWinTest01(){
-        String name = "Beyonce";
+        String name = "name";
         Player player = new Player(name);
 
         player.addWin();
@@ -40,11 +40,42 @@ public class PlayerTest {
     }
 
     @Test
-    public void resetWinTest01(){
-        String name = "Beyonce";
+    public void addGetWinTest02(){
+        String name = "name";
         Player player = new Player(name);
 
         player.addWin();
+        player.addWin();
+        player.addWin();
+        player.addWin();
+
+        Integer expected = 4;
+        Integer actual = player.getWinningStreak();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void resetWinTest01(){
+        String name = "name";
+        Player player = new Player(name);
+
+        player.addWin();
+        player.resetWin();
+        Integer expected = 0;
+        Integer actual = player.getWinningStreak();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void resetWinTest02(){
+        String name = "name";
+        Player player = new Player(name);
+
+        player.addWin();
+        player.addWin();
+        player.addWin();
+        player.addWin();
+
         player.resetWin();
         Integer expected = 0;
         Integer actual = player.getWinningStreak();
